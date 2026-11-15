@@ -1,0 +1,32 @@
+This command from startup.bat will install MySQL2:
+
+    npm install --save mysql2
+
+Then, you must create a file ".env"
+Keep this next to .gitignore in the directory
+Then paste this into .env:
+
+    DB_HOST=localhost
+    DB_USER=app_user
+    DB_PASSWORD=your_password
+    DB_NAME=volunteer_tracker
+    DB_PORT=3306
+
+Except be sure to fill in the password with whatever yours is, 
+and change the port as well if yours differs.
+
+Then, in your SQL Workbench you're ready to run the SQL commands located in the migration folder.
+
+ANOTHER IMPORTANT STEP: You only have to run the Init script once, even if you delete the entire schema
+This creates a local host profile in your MySQL instance, which is specific to our volunteer_tracker project.
+
+After this succeeds, you can run the Schema script I wrote which will generate the default schema with a few values by default.
+
+If you want to test the database connection, we will use the test_server.js
+All you need to do is run a new terminal, navigating to the volunteering-app, and run the following:
+
+    node src/test_server.js
+
+Then you can enter the following into your browser, and it just displays entries in the Users table:
+
+    http://localhost:5000/api/test-db

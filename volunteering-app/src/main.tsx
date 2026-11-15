@@ -1,11 +1,12 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './stylesheets/sign-in.css'
-// import App from './App.tsx'
-import SignIn from './SignIn.tsx'
+
+// Imports stylesheet & SignUp panel
+import './stylesheets/sign-up.css'
+import SignUp from './SignUp.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <SignIn />
+    <SignUp />
   </StrictMode>,
 )

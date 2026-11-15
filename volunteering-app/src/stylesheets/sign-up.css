@@ -1,0 +1,23 @@
+/* Center our panel */
+.main-cont {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Make background color red */
+.form-cont {
+  background-color: red;
+  /* max-width: fit-content;
+    margin: auto; */
+}
+
+/* TEMP: Very sloppy way of reducing space between RadioFormField heading & its options */
+.form-cont p {
+  margin-bottom: 3px;
+}

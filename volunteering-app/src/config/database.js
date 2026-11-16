@@ -3,7 +3,8 @@ import dotenv from "dotenv"; // a .env file in node_modules contains your pc's l
 
 dotenv.config();
 
-const pool = mysql.createPool({ // Creating a connection pool makes it so we dont open/close a new database connection for each request
+ // Creating a connection pool makes it so we dont open/close a new database connection for each request
+const pool = mysql.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,

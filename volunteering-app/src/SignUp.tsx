@@ -6,7 +6,7 @@ import RadioFormField from './RadioFormField'
 const types = ["Volunteer", "Organizer"]
 
 // This constant should hold the URL where we're sending the sign-up data
-const apiURL = 'example'
+const apiURL = 'http://localhost:5000/api/v1/signup'
 
 // This function runs when the "Submit" button is pressed
 const handleSubmit = (event : any) => {
@@ -34,12 +34,38 @@ const handleSubmit = (event : any) => {
     console.log(password);
     console.log(account_type);
     
-    // TODO: Send a request with the JSON data as the body to the back-end
-    // Creates a function that sends a request to our back-end & prints the result
-    const fetchData = async ()=> {
-        const request_result = await fetch(apiURL);
-        console.log(request_result);
+   
+    // Creates a function that sends a POST request to our back-end
+     const fetchData = async ()=> {
+
+        // Send POST request and store response
+        const request_result = await fetch(apiURL, {
+            method: "POST",
+            body: JSON.stringify(signup_JSON),
+            headers: {
+                // Tells back-end we're sending JSON data
+                "Content-Type": "application/json" 
+            }
+        });
+
+        // If successful response
+        if (request_result.ok) {
+            // Grab text from response
+            const tst = await request_result.text()
+            if (tst == "Good") {
+                // Sends the user to the dashboard
+                // window.location.pathname += 'dashboard'
+            }
+        } else {
+            if (request_result.status == 500) {
+                console.log(request_result);
+            }
+
+            console.log(request_result);
+        }
+        return request_result;
     }
+    
     
     // Runs the function
     fetchData();

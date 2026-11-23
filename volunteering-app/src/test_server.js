@@ -43,9 +43,9 @@ app.post("/api/v1/signup", async (req, res) => {
         // Inserts account information into the database
         // NOTE: I put placeholder values in first_name, last_name, & date_created as the front-end doesn't provide those yet
         const [results] = await database.query( 
-            "INSERT INTO Users (email, user_password, first_name, last_name, date_created) VALUES (?, ?, 'null', 'nill', null)"
+            "INSERT INTO Users (email, user_password, first_name, last_name, date_created) VALUES (?, ?, ?, ?, CURRENT_DATE())"
             // Replaces the question marks with account email & password
-        , [account_info.email, account_info.password]);
+        , [account_info.email, account_info.password, account_info.first_name, account_info.last_name]);
 
         console.log(results)
         

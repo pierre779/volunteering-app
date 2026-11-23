@@ -1,13 +1,9 @@
 // Custom Components
-import FormField from './FormField'
-import RadioFormField from './RadioFormField'
+import TextFormField from './TextFormField'
 
-
-// Form will automatically update to reflect the values in this list
-const types = ["Volunteer", "Organizer"]
 
 // This constant should hold the URL where we're sending the sign-up data
-const apiURL = 'http://localhost:5000/api/v1/signup'
+const apiURL = 'http://localhost:5000/api/v1/signin'
 
 // This function runs when the "Submit" button is pressed
 const handleSubmit = (event : any) => {
@@ -20,47 +16,60 @@ const handleSubmit = (event : any) => {
     // Grabs specific data needed from the formData object
     const email = formData.get('Email');
     const password = formData.get('Password');
-    const account_type = formData.get('account-type');
 
+    // TODO: Encrypt password & put the hash of the encrypted password into the JSON
+    // Q: Should we encrypt everything or just the password?
     // The data is turned into a JSON object to be sent over to the back-end
-    const signup_JSON = 
+    const signin_JSON = 
         {
             "email" : email,
-            "password": password,
-            "account_type": account_type
+            "password": password
         }
     
     // Debug messages
     console.log(email);
     console.log(password);
-    console.log(account_type);
     
-    // TODO: Send a request with the JSON data as the body to the back-end
-    // Creates a function that sends a request to our back-end & prints the result
-    const fetchData = async ()=> {
+   
+    // Creates a function that sends a POST request to our back-end
+     const fetchData = async ()=> {
+
+        // Send POST request and store response
         const request_result = await fetch(apiURL, {
             method: "POST",
-            body: JSON.stringify(signup_JSON)
+            body: JSON.stringify(signin_JSON),
+            headers: {
+                // Tells back-end we're sending JSON data
+                "Content-Type": "application/json" 
+            }
         });
 
+        // If successful response
         if (request_result.ok) {
-            window.location.pathname += '/dashboard'
+            // Grab text from response
+            const tst = await request_result.text()
+            if (tst == "Good") {
+                // Sends the user to the dashboard
+                // window.location.pathname += 'dashboard'
+            }
         } else {
             if (request_result.status == 500) {
-                // console.log(request_result.text);
+                console.log(request_result);
             }
+
+            console.log(request_result);
         }
         return request_result;
     }
     
+    
     // Runs the function
     fetchData();
-
-    
 }
 
-// Sign-Up Panel
-export default function SignUp() {
+// TODO: Allow to user to go from this page directly to the sign-up page (Likely through a link)
+// Sign-In Panel
+export default function SignIn() {
 
     return (
     <>
@@ -68,26 +77,16 @@ export default function SignUp() {
             <div className="form-cont">
                 {/* We use form here because it allows us a suite of functions that lets us collect the data easily */}
                 <form onSubmit={handleSubmit}>
-                    {/* NOTE: THE ONLY FORMFIELD TYPE THAT WORKS RIGHT NOW IS 'text', maybe will expand functionality later */}
-                    {/* FOR MORE INFO, LOOK AT FormField.tsx */}
-                    <FormField 
+                    <TextFormField 
                         label='Email' 
                         placeholder='example@gmail.com' 
-                        type='text' required={true}
                     />
-                    <FormField 
+                    {/* TODO: Add ability to toggle password visibility */}
+                    <TextFormField 
                         label='Password' 
-                        placeholder='' 
-                        type='text' 
-                        required={true}
+                        sensitive={true} 
                     />
-                    {/* FOR MORE INFO, LOOK AT RadioFormField.tsx */}
-                    <RadioFormField 
-                        heading='Account Type: ' 
-                        options={types} 
-                        required={true}
-                    />
-                    <button type="submit">Submit</button>
+                    <button type="submit">Log In</button>
                 </form>
                 
             </div>

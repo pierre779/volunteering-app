@@ -1,3 +1,5 @@
+// THIS COMPONENT IS DEFUNCT FOR NOW
+
 interface FormFieldProps {
   label: string; // Label that precedes the input form
   placeholder: string; // Placeholder text inside of the form

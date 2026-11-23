@@ -1,3 +1,5 @@
+// THIS COMPONENT IS DEFUNCT FOR NOW
+
 interface RadioFormFieldProps {
   heading: string; // Text that displays above all options
   options: string[]; // List of options to be displayed

@@ -1,9 +1,6 @@
 // Custom Components
-import FormField from './FormField'
-import RadioFormField from './RadioFormField'
+import TextFormField from './TextFormField'
 
-// Form will automatically update to reflect the values in this list
-const types = ["Volunteer", "Organizer"]
 
 // This constant should hold the URL where we're sending the sign-up data
 const apiURL = 'http://localhost:5000/api/v1/signup'
@@ -17,26 +14,29 @@ const handleSubmit = (event : any) => {
     const formData = new FormData(event.currentTarget);
 
     // Grabs specific data needed from the formData object
+    const first_name = formData.get('First Name');
+    const last_name = formData.get('Last Name');
     const email = formData.get('Email');
     const password = formData.get('Password');
-    const account_type = formData.get('account-type');
 
+    // TODO: Encrypt password & put the hash of the encrypted password into the JSON
+    // Q: Should we encrypt everything or just the password?
     // The data is turned into a JSON object to be sent over to the back-end
     const signup_JSON = 
         {
+            "first_name": first_name,
+            "last_name": last_name,
             "email" : email,
-            "password": password,
-            "account_type": account_type
+            "password": password
         }
     
     // Debug messages
     console.log(email);
     console.log(password);
-    console.log(account_type);
     
    
     // Creates a function that sends a POST request to our back-end
-     const fetchData = async ()=> {
+     const sendData = async ()=> {
 
         // Send POST request and store response
         const request_result = await fetch(apiURL, {
@@ -68,9 +68,16 @@ const handleSubmit = (event : any) => {
     
     
     // Runs the function
-    fetchData();
+    sendData();
 }
 
+function validateField(field : any) {
+    if (!field.validity.valid) {
+        return false;
+    }
+}
+
+// TODO: Allow to user to go from this page directly to the sign-in page (Likely through a link)
 // Sign-Up Panel
 export default function SignUp() {
 
@@ -80,26 +87,27 @@ export default function SignUp() {
             <div className="form-cont">
                 {/* We use form here because it allows us a suite of functions that lets us collect the data easily */}
                 <form onSubmit={handleSubmit}>
-                    {/* NOTE: THE ONLY FORMFIELD TYPE THAT WORKS RIGHT NOW IS 'text', maybe will expand functionality later */}
-                    {/* FOR MORE INFO, LOOK AT FormField.tsx */}
-                    <FormField 
+                    <TextFormField 
+                        label='First Name' 
+                        placeholder='John'
+                    />
+                    <TextFormField 
+                        label='Last Name' 
+                        placeholder='Doe' 
+                    />
+                    <TextFormField 
                         label='Email' 
                         placeholder='example@gmail.com' 
-                        type='text' required={true}
                     />
-                    <FormField 
+                    {/* TODO: Add ability to toggle password visibility */}
+                    <TextFormField 
                         label='Password' 
-                        placeholder='' 
-                        type='text' 
-                        required={true}
+                        sensitive={true} 
                     />
-                    {/* FOR MORE INFO, LOOK AT RadioFormField.tsx */}
-                    <RadioFormField 
-                        heading='Account Type: ' 
-                        options={types} 
-                        required={true}
+                    <TextFormField 
+                        label='Confirm Password' 
                     />
-                    <button type="submit">Submit</button>
+                    <button type="submit">Create Account</button>
                 </form>
                 
             </div>
@@ -107,4 +115,7 @@ export default function SignUp() {
     </>
     ) 
 }
+
+
+
 

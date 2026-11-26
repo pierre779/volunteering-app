@@ -1,0 +1,12 @@
+Important docker commands:
+
+docker compose up -d        -   Starts the environment
+
+docker compose down         -   Stops and removes containers & network (add '-v' to delete database)
+
+docker compose restart db   -   Restarts MySQL
+
+docker compose stop         -   Stop services without removing them entirely
+
+docker compose start        -   Starts previously stopped services
+
